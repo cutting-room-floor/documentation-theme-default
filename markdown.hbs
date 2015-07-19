@@ -9,6 +9,9 @@
 
 {{#params}}
 * `{{name}}` **{{format_type type}}** {{format_description description}}{{#default}} (optional, default `{{.}}`){{/default}}
+{{#properties}}
+  * `{{name}}` **{{format_type type}}** {{format_description description}}{{#default}} (optional, default `{{.}}`){{/default}}
+{{/properties}}
 {{/params}}
 {{/if}}
 

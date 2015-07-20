@@ -47,15 +47,12 @@
       </div>
       <div class='col sm-col-9'>
         <div class='px1'>
-{{#each docs ~}}{{> section}}{{/each}}
+{{#each docs ~}}<div class='py2'>{{> section}}</div>{{/each}}
         </div>
       </div>
     </div>
   </div>
   <script src='assets/anchor.js'></script>
-  <script>
-  anchors.options.placement = 'left';
-  anchors.add();
-  </script>
+  <script src='assets/site.js'></script>
 </body>
 </html>

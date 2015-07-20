@@ -74,3 +74,11 @@ h3:hover .anchorjs-link,
 h4:hover .anchorjs-link {
   opacity: 1;
 }
+
+.collapsible .collapser {
+  display:none;
+}
+
+.collapsible:target .collapser {
+  display: block;
+}

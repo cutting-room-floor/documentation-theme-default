@@ -1,4 +1,4 @@
-<section class='py2'>
+<section class='py2 clearfix'>
   {{#if context.github}}
     <div class='right py2'>
       {{#if augments}}
@@ -12,7 +12,7 @@
       <a class='fade font-smaller' href='{{{context.github}}}'><code>{{{context.path}}}</code></a>
     </div>
   {{/if}}
-  <h2 id='{{permalink}}'>
+  <h2 id='{{permalink}}' class='mt0'>
     {{name}}<span class='gray'>{{{format_params}}}</span>
   </h2>
   {{{md description}}}
@@ -112,8 +112,8 @@
     {{#if members.static}}
       <h4>Static members</h4>
       {{#each members.static}}
-        <div>
-          <a class='black' href='#{{permalink}}'>
+        <div class='collapsible' id='{{permalink}}'>
+          <a href='#{{permalink}}'>
             <code>
               .{{name}}<span class='gray'>{{{format_params}}}</span>
             </code>
@@ -121,7 +121,7 @@
               {{{md description}}}
             </span>
           </a>
-          <div class='hide'>
+          <div class='collapser border px2 m2'>
             {{> section}}
           </div>
         </div>
@@ -131,8 +131,8 @@
     {{#if members.instance}}
       <h4>Instance members</h4>
       {{#each members.instance}}
-        <div>
-          <a class='black' href='#{{permalink}}'>
+        <div class='collapsible' id='{{permalink}}'>
+          <a href='#{{permalink}}'>
             <code>
               #{{name}}<span class='gray'>{{{format_params}}}</span>
             </code>
@@ -140,7 +140,7 @@
               {{{md description}}}
             </span>
           </a>
-          <div class='hide'>
+          <div class='collapser border px2'>
             {{> section}}
           </div>
         </div>

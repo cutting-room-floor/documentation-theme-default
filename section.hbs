@@ -1,4 +1,4 @@
-<section id='{{permalink}}'class='mt4 mb4 px2'>
+<section class='py2'>
   {{#if context.github}}
     <div class='right py2'>
       {{#if augments}}
@@ -12,73 +12,67 @@
       <a class='fade font-smaller' href='{{{context.github}}}'><code>{{{context.path}}}</code></a>
     </div>
   {{/if}}
-  <h3 class='regular'>
-    <a class='black' href='#{{permalink}}'>
-      <code>
-        {{name}}<span class='gray'>{{{format_params}}}</span>
-      </code>
-    </a>
-  </h3>
+  <h2 id='{{permalink}}'>
+    {{name}}<span class='gray'>{{{format_params}}}</span>
+  </h2>
   {{{md description}}}
 
   {{#if params}}
-    <p>
-      <table class='table-light overflow-hidden bg-cloudy-light'>
-        <thead>
-          <th class='col-3'>parameter</th>
-          <th class='col-3'>type</th>
-          <th class='col-6'>description</th>
-        </thead>
-        {{#params}}
-          <tr>
-            <td>{{name}}</td>
-            <td>
-              {{{format_type type}}}
-              {{#default}}
-                (default <code>{{.}}</code>)
-              {{/default}}
-            </td>
-            <td>{{{md description}}}</td>
-          </tr>
-          {{#properties}}
-            <tr>
-              <td>{{name}}</td>
-              <td>
-                {{{format_type type}}}
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+      {{#params}}
+        <li>{{{format_type type}}} <strong>{{name}}</strong>
+          {{#default}}
+            (default <code>{{.}}</code>)
+          {{/default}}
+          :
+          <span class='force-inline'>
+            {{{md description}}}
+          </span>
+        </li>
+        {{#if properties}}
+          <ul>
+            {{#properties}}
+              <li>{{{format_type type}}} {{name}}
                 {{#default}}
-                (default <code>{{.}}</code>)
+                  (default <code>{{.}}</code>)
                 {{/default}}
-              </td>
-              <td>{{{md description}}}</td>
-            </tr>
-          {{/properties}}
-        {{/params}}
-      </table>
-    </p>
+                {{{md description}}}</li>
+            {{/properties}}
+          </ul>
+        {{/if}}
+      {{/params}}
+    </ul>
   {{/if}}
 
   {{#if properties}}
-    <p>
-      <table class='table-light overflow-hidden bg-cloudy-light'>
-        <thead>
-          <th class='col-3'>property</th>
-          <th class='col-3'>type</th>
-          <th class='col-6'>description</th>
-        </thead>
-        {{#properties}}
-          <tr>
-            <td>{{name}}</td>
-            <td>
-              {{{format_type type}}}
-              {{#default}}
-                (default <code>{{.}}</code>)
-              {{/default}}
-            </td>
-            <td>{{{md description}}}</td>
-          </tr>
-        {{/properties}}
-      </table>
-    </p>
+    <h4>Properties</h4>
+    <ul class='suppress-p-margin'>
+      {{#properties}}
+        <li>{{{format_type type}}} <strong>{{name}}</strong>
+            {{#default}}
+              (default <code>{{.}}</code>)
+            {{/default}}
+            {{#description}}
+              :
+              <span class='force-inline'>
+                {{{md .}}}
+              </span>
+            {{/description}}
+            </li>
+        {{#if properties}}
+          <ul>
+            {{#properties}}
+              <li><code>{{name}}</code> {{{format_type type}}}
+                {{#default}}
+                  (default <code>{{.}}</code>)
+                {{/default}}
+                {{{md description}}}</li>
+            {{/properties}}
+          </ul>
+        {{/if}}
+      {{/properties}}
+    </li>
   {{/if}}
 
   {{#if returns}}
@@ -93,50 +87,72 @@
   {{/if}}
 
   {{#if throws}}
-      <h4>Throws</h4>
-      <table class='table-light overflow-hidden bg-cloudy-light'>
-        <thead>
-          <th class='col-3'>exception</th>
-          <th class='col-9'>description</th>
-        </thead>
-        {{#throws}}
-          <tr>
-            <td>{{{format_type type}}}</td>
-            <td>
-              {{{md description}}}
-            </td>
-          </tr>
-        {{/throws}}
-      </table>
+    <h4>Throws</h4>
+    <table class='table-light overflow-hidden bg-cloudy-light'>
+      <thead>
+        <th class='col-3'>exception</th>
+        <th class='col-9'>description</th>
+      </thead>
+      {{#throws}}
+        <tr>
+          <td>{{{format_type type}}}</td>
+          <td>
+            {{{md description}}}
+          </td>
+        </tr>
+      {{/throws}}
+    </table>
   {{/if}}
 
   {{#if examples}}
     <h4>Examples</h4>
-{{#each examples ~}}<pre>{{{.}}}</pre>{{/each}}
+{{#each examples ~}}<pre class='overflow-auto'>{{{.}}}</pre>{{/each}}
   {{/if}}
 
-  {{#if members.static}}
-    {{#each members.static}}
-      <div class='section-indent'>
-{{> section}}
-      </div>
-    {{/each}}
-  {{/if}}
+    {{#if members.static}}
+      <h4>Static members</h4>
+      {{#each members.static}}
+        <div>
+          <a class='black' href='#{{permalink}}'>
+            <code>
+              .{{name}}<span class='gray'>{{{format_params}}}</span>
+            </code>
+            <span class='force-inline'>
+              {{{md description}}}
+            </span>
+          </a>
+          <div class='hide'>
+            {{> section}}
+          </div>
+        </div>
+      {{/each}}
+    {{/if}}
 
-  {{#if members.instance}}
-    {{#each members.instance}}
-      <div class='section-indent'>
-{{> section}}
-      </div>
-    {{/each}}
-  {{/if}}
+    {{#if members.instance}}
+      <h4>Instance members</h4>
+      {{#each members.instance}}
+        <div>
+          <a class='black' href='#{{permalink}}'>
+            <code>
+              #{{name}}<span class='gray'>{{{format_params}}}</span>
+            </code>
+            <span class='force-inline'>
+              {{{md description}}}
+            </span>
+          </a>
+          <div class='hide'>
+            {{> section}}
+          </div>
+        </div>
+      {{/each}}
+    {{/if}}
 
-  {{#if events}}
-    {{#each events}}
-      <div class='section-indent'>
-{{> section}}
-      </div>
-    {{/each}}
-  {{/if}}
+    {{#if events}}
+      {{#each events}}
+        <div>
+  {{> section}}
+        </div>
+      {{/each}}
+    {{/if}}
 
 </section>

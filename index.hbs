@@ -15,6 +15,13 @@
         <div class='px1 py1'>
           <a href='/' class='h5 button block button-transparent'>{{options.name}} {{options.version}}</a>
           <div class='px2'>
+            <input
+              placeholder='Filter'
+              id='filter-input'
+              class='col12 block field-light'
+              type='text' />
+          </div>
+          <div id='toc' class='px2'>
             {{#each docs}}
               <a
                 href='#{{permalink}}'

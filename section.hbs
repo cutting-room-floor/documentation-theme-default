@@ -16,7 +16,6 @@
     {{name}}<span class='gray'>{{{format_params}}}</span>
   </h2>
   {{{md description}}}
-
   {{#if params}}
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
@@ -44,7 +43,6 @@
       {{/params}}
     </ul>
   {{/if}}
-
   {{#if properties}}
     <h4>Properties</h4>
     <ul class='suppress-p-margin'>
@@ -74,7 +72,6 @@
       {{/properties}}
     </li>
   {{/if}}
-
   {{#if returns}}
     {{#returns}}
       <h4>Returns</h4>
@@ -85,7 +82,6 @@
       </span>
     {{/returns}}
   {{/if}}
-
   {{#if throws}}
     <h4>Throws</h4>
     <table class='table-light overflow-hidden bg-cloudy-light'>
@@ -103,12 +99,10 @@
       {{/throws}}
     </table>
   {{/if}}
-
   {{#if examples}}
     <h4>Examples</h4>
 {{#each examples ~}}<pre class='overflow-auto'>{{{.}}}</pre>{{/each}}
   {{/if}}
-
     {{#if members.static}}
       <h4>Static members</h4>
       {{#each members.static}}
@@ -127,7 +121,6 @@
         </div>
       {{/each}}
     {{/if}}
-
     {{#if members.instance}}
       <h4>Instance members</h4>
       {{#each members.instance}}
@@ -146,7 +139,6 @@
         </div>
       {{/each}}
     {{/if}}
-
     {{#if events}}
       {{#each events}}
         <div>
@@ -154,5 +146,4 @@
         </div>
       {{/each}}
     {{/if}}
-
 </section>

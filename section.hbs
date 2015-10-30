@@ -1,20 +1,18 @@
 <section class='py2 clearfix'>
-  {{#if context.github}}
-    <div class='right py2'>
-      {{#if augments}}
-        <span class='font-smaller'>
-          Extends
-          {{#augments}}
-            {{{autolink name}}}
-          {{/augments}}
-        </span>
-      {{/if}}
-      <a class='fade font-smaller' href='{{{context.github}}}'><code>{{{context.path}}}</code></a>
-    </div>
-  {{/if}}
   <h2 id='{{permalink}}' class='mt0'>
     {{name}}<span class='gray'>{{{format_params}}}</span>
   </h2>
+  {{#if augments}}
+    <p>
+      Extends
+      {{#augments}}
+        {{{autolink name}}}
+      {{/augments}}
+    </p>
+  {{/if}}
+  {{#if context.github}}
+    <p><a href='{{{context.github}}}'><code>{{{context.path}}}</code></a></p>
+  {{/if}}
   {{{md description}}}
   {{#if params}}
     <h4>Parameters</h4>
@@ -84,20 +82,11 @@
   {{/if}}
   {{#if throws}}
     <h4>Throws</h4>
-    <table class='table-light overflow-hidden bg-cloudy-light'>
-      <thead>
-        <th class='col-3'>exception</th>
-        <th class='col-9'>description</th>
-      </thead>
+    <ul>
       {{#throws}}
-        <tr>
-          <td>{{{format_type type}}}</td>
-          <td>
-            {{{md description}}}
-          </td>
-        </tr>
+        <li>{{{format_type type}}}: <span class='force-inline'>{{{md description}}}</span></li>
       {{/throws}}
-    </table>
+    </ul>
   {{/if}}
   {{#if examples}}
     <h4>Examples</h4>

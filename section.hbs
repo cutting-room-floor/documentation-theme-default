@@ -23,21 +23,21 @@
             (default <code>{{.}}</code>)
           {{/default}}
           :
-          <span class='force-inline'>
+          <div class='force-inline'>
             {{{md description}}}
-          </span>
+          </div>
+          {{#if properties}}
+            <ul>
+              {{#properties}}
+                <li>{{{format_type type}}} {{name}}
+                  {{#default}}
+                    (default <code>{{.}}</code>)
+                  {{/default}}
+                  {{{md description}}}</li>
+              {{/properties}}
+            </ul>
+          {{/if}}
         </li>
-        {{#if properties}}
-          <ul>
-            {{#properties}}
-              <li>{{{format_type type}}} {{name}}
-                {{#default}}
-                  (default <code>{{.}}</code>)
-                {{/default}}
-                {{{md description}}}</li>
-            {{/properties}}
-          </ul>
-        {{/if}}
       {{/params}}
     </ul>
   {{/if}}
@@ -51,9 +51,9 @@
             {{/default}}
             {{#description}}
               :
-              <span class='force-inline'>
+              <div class='force-inline'>
                 {{{md .}}}
-              </span>
+              </div>
             {{/description}}
             </li>
         {{#if properties}}
@@ -75,16 +75,16 @@
       <h4>Returns</h4>
       <code>{{{format_type type}}}</code>
       {{#if description}}:{{/if}}
-      <span class='force-inline'>
+      <div class='force-inline'>
         {{{md description}}}
-      </span>
+      </div>
     {{/returns}}
   {{/if}}
   {{#if throws}}
     <h4>Throws</h4>
     <ul>
       {{#throws}}
-        <li>{{{format_type type}}}: <span class='force-inline'>{{{md description}}}</span></li>
+        <li>{{{format_type type}}}: <div class='force-inline'>{{{md description}}}</div></li>
       {{/throws}}
     </ul>
   {{/if}}
@@ -100,9 +100,9 @@
             <code>
               .{{name}}<span class='gray'>{{{format_params}}}</span>
             </code>
-            <span class='force-inline'>
+            <div class='force-inline'>
               {{{md description}}}
-            </span>
+            </div>
           </a>
           <div class='collapser border px2 m2'>
             {{> section}}
@@ -118,7 +118,7 @@
             <code>
               #{{name}}<span class='gray'>{{{format_params}}}</span>
             </code>
-            <span class='force-inline'>
+            <div class='force-inline'>
               {{{md description}}}
             </span>
           </a>

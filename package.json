@@ -23,6 +23,7 @@
   "homepage": "https://github.com/documentationjs/documentation-theme-default",
   "dependencies": {
     "concat-stream": "^1.5.0",
+    "documentation-theme-utils": "^1.0.1",
     "globals-docs": "^2.1.0",
     "handlebars": "^3.0.3",
     "jsdoc-inline-lex": "^1.0.1",

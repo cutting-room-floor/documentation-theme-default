@@ -5,6 +5,7 @@ var fs = require('fs'),
   File = require('vinyl'),
   vfs = require('vinyl-fs'),
   concat = require('concat-stream'),
+  utils = require('documentation-theme-utils'),
   Handlebars = require('handlebars'),
   getGlobalExternalLink = require('globals-docs').getDoc,
   mdast = require('mdast'),
@@ -69,46 +70,6 @@ function autolink(paths, text) {
 }
 
 /**
- * Helper used to format JSDoc-style type definitions into HTML.
- *
- * @name formatType
- * @param {Object} type type object in doctrine style
- * @param {Array<string>} paths valid namespace paths that can be linked
- * @returns {string} string
- * @example
- * var x = { type: 'NameExpression', name: 'String' };
- * // in template
- * // {{ type x }}
- * // generates String
- */
-function formatType(type, paths) {
-  if (!type) {
-    return '';
-  }
-  function recurse(element) {
-    return formatType(element, paths);
-  }
-  switch (type.type) {
-  case 'NameExpression':
-    return '<code>' + autolink(paths, type.name) + '</code>';
-  case 'UnionType':
-    return type.elements.map(recurse).join(' or ');
-  case 'AllLiteral':
-    return 'Any';
-  case 'RestType':
-    return '...' + formatType(type.expression, paths);
-  case 'OptionalType':
-  case 'NullableType':
-    return '<code>[' + formatType(type.expression, paths) + ']</code>';
-  case 'TypeApplication':
-    return formatType(type.expression, paths) + '&lt;' +
-      type.applications.map(recurse).join(', ') + '&gt;';
-  case 'UndefinedLiteral':
-    return 'undefined';
-  }
-}
-
-/**
  * Format a parameter name. This is used in formatParameters
  * and just needs to be careful about differentiating optional
  * parameters
@@ -136,6 +97,10 @@ function formatParameters() {
       return formatParameter(param);
     }).join(', ') + ')';
 }
+
+var htmlOptions = {
+  entities: false
+};
 
 module.exports = function (comments, options, callback) {
   var pageTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, 'index.hbs'), 'utf8'));
@@ -171,11 +136,16 @@ module.exports = function (comments, options, callback) {
    * // generates <h2>foo</h2>
    */
   Handlebars.registerHelper('md', function formatMarkdown(string) {
-    return new Handlebars.SafeString(mdast().use(html).process(formatInlineTags(string)));
+    return new Handlebars.SafeString(mdast().use(html, htmlOptions)
+        .process(formatInlineTags(string)));
   });
 
   Handlebars.registerHelper('format_type', function (type) {
-    return formatType(type, paths);
+    return mdast().use(html, htmlOptions)
+      .stringify({
+        type: 'root',
+        children: utils.formatType(type, paths)
+      });
   });
 
   // push assets into the pipeline as well.

@@ -7,7 +7,7 @@ var fs = require('fs'),
   concat = require('concat-stream'),
   utils = require('documentation-theme-utils'),
   Handlebars = require('handlebars'),
-  getGlobalExternalLink = require('globals-docs').getDoc,
+  getDoc = require('globals-docs').getDoc,
   mdast = require('mdast'),
   html = require('mdast-html'),
   inlineLex = require('jsdoc-inline-lex');
@@ -26,13 +26,14 @@ function markdownLink(description, href) {
 /**
  * Format link & tutorial tags with simple code inline tags.
  *
+ * @param {Array<string>} paths potential linkable namepaths
  * @param {string} text input - typically a description
  * @returns {string} markdown-friendly output
  * @private
  * @example
  * formatInlineTags('{@link Foo}'); // "[Foo](#foo)"
  */
-function formatInlineTags(text) {
+function formatInlineTags(paths, text) {
   var output = '';
   var tokens = inlineLex(text);
 
@@ -40,14 +41,15 @@ function formatInlineTags(text) {
     if (tokens[i].type === 'text') {
       output += tokens[i].capture[0];
     } else if (tokens[i].type === 'link') {
-      var parts = tokens[i].capture[1].split(/\s|\|/);
-      if (parts.length === 1) {
-        output += markdownLink(tokens[i].capture[1], tokens[i].capture[1]);
+      var described = tokens[i].capture[1].match(/([^\s|\|]*)(\s|\|)(.*)/);
+      if (described) {
+        // 1 is the match, 3 is description
+        output += autolink(paths, described[1], described[3]);
       } else {
-        output += markdownLink(parts.slice(1).join(' '), parts[0]);
+        output += autolink(paths, tokens[i].capture[1]);
       }
     } else if (tokens[i].type === 'prefixLink') {
-      output += markdownLink(tokens[i].capture[1], tokens[i].capture[2]);
+      output += autolink(paths, tokens[i].capture[1], tokens[i].capture[2]);
     }
   }
 
@@ -58,13 +60,27 @@ function formatInlineTags(text) {
  * Link text to this page or to a central resource.
  * @param {Array<string>} paths list of valid namespace paths that are linkable
  * @param {string} text inner text of the link
+ * @returns {string?} potentially a url
+ */
+function getNamedLink(paths, text) {
+  if (paths.indexOf(text) !== -1) {
+    return '#' + text;
+  } else if (getDoc(text)) {
+    return getDoc(text);
+  }
+}
+
+/**
+ * Link text to this page or to a central resource.
+ * @param {Array<string>} paths list of valid namespace paths that are linkable
+ * @param {string} text inner text of the link
+ * @param {string} description link text override
  * @returns {string} potentially linked HTML
  */
-function autolink(paths, text) {
-  if (paths.indexOf(text) !== -1) {
-    return '<a href="#' + text + '">' + text + '</a>';
-  } else if (getGlobalExternalLink(text)) {
-    return '<a href="' + getGlobalExternalLink(text) + '">' + text + '</a>';
+function autolink(paths, text, description) {
+  var url = getNamedLink(paths, text);
+  if (url) {
+    return '<a href="' + url + '">' + (description || text) + '</a>';
   }
   return text;
 }
@@ -137,7 +153,7 @@ module.exports = function (comments, options, callback) {
    */
   Handlebars.registerHelper('md', function formatMarkdown(string) {
     return new Handlebars.SafeString(mdast().use(html, htmlOptions)
-        .process(formatInlineTags(string)));
+        .process(formatInlineTags(paths, string)));
   });
 
   Handlebars.registerHelper('format_type', function (type) {

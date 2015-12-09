@@ -122,7 +122,10 @@ module.exports = function (comments, options, callback) {
   var pageTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, 'index.hbs'), 'utf8'));
 
   Handlebars.registerPartial('section',
-    Handlebars.compile(fs.readFileSync(path.join(__dirname, 'section.hbs'), 'utf8')));
+    Handlebars.compile(fs.readFileSync(path.join(__dirname, 'section.hbs'), 'utf8'), {
+	  preventIndent: true
+	})
+  );
 
   var paths = comments.map(function (comment) {
     return comment.path.join('.');

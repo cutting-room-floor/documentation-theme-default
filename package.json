@@ -1,6 +1,6 @@
 {
   "name": "documentation-theme-default",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "the default theme for documentation",
   "scripts": {
     "test": "handlebars index.hbs section.hbs > /dev/null"

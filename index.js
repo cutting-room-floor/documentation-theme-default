@@ -134,7 +134,9 @@ module.exports = function (comments, options, callback) {
     return this.path.join('.');
   });
 
-  Handlebars.registerHelper('autolink', autolink.bind(autolink, paths));
+  Handlebars.registerHelper('autolink', function (text) {
+      return autolink(paths, text);
+  });
 
   Handlebars.registerHelper('format_params', formatParameters);
 

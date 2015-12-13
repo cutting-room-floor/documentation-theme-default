@@ -13,6 +13,11 @@
   {{#if context.github}}
     <p><a href='{{{context.github}}}'><code>{{{context.path}}}</code></a></p>
   {{/if}}
+  {{#if version }}<div>Version: {{version}}</div>{{/if}}
+  {{#if license }}<div>License: {{license}}</div>{{/if}}
+  {{#if author }}<div>Author: {{author}}</div>{{/if}}
+  {{#if copyright }}<div>Copyright: {{copyright}}</div>{{/if}}
+  {{#if since }}<div>Since: {{since}}</div>{{/if}}
   {{{md description}}}
   {{#if params}}
     <h4>Parameters</h4>

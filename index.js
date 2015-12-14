@@ -6,6 +6,7 @@ var fs = require('fs'),
   vfs = require('vinyl-fs'),
   concat = require('concat-stream'),
   utils = require('documentation-theme-utils'),
+  hljs = require('highlight.js'),
   Handlebars = require('handlebars'),
   getDoc = require('globals-docs').getDoc,
   mdast = require('mdast'),
@@ -110,6 +111,10 @@ var htmlOptions = {
 module.exports = function (comments, options, callback) {
   var pageTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, 'index.hbs'), 'utf8'));
 
+  var hljsOptions = options.hljs || {};
+  hljs.configure(hljsOptions);
+
+
   Handlebars.registerPartial('section',
     Handlebars.compile(fs.readFileSync(path.join(__dirname, 'section.hbs'), 'utf8'), {
       preventIndent: true
@@ -156,6 +161,13 @@ module.exports = function (comments, options, callback) {
         type: 'root',
         children: utils.formatType(type, paths)
       });
+  });
+
+  Handlebars.registerHelper('highlight', function (example) {
+    if (hljsOptions.highlightAuto) {
+      return hljs.highlightAuto(example).value;
+    }
+    return hljs.highlight('js', example).value;
   });
 
   // push assets into the pipeline as well.

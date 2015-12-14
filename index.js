@@ -99,8 +99,8 @@ function formatParameters() {
     return '';
   }
   return '(' + this.params.map(function (param) {
-      return formatParameter(param);
-    }).join(', ') + ')';
+    return formatParameter(param);
+  }).join(', ') + ')';
 }
 
 var htmlOptions = {
@@ -112,8 +112,8 @@ module.exports = function (comments, options, callback) {
 
   Handlebars.registerPartial('section',
     Handlebars.compile(fs.readFileSync(path.join(__dirname, 'section.hbs'), 'utf8'), {
-	  preventIndent: true
-	})
+      preventIndent: true
+    })
   );
 
   var paths = comments.map(function (comment) {
@@ -127,7 +127,7 @@ module.exports = function (comments, options, callback) {
   });
 
   Handlebars.registerHelper('autolink', function (text) {
-      return autolink(paths, text);
+    return autolink(paths, text);
   });
 
   Handlebars.registerHelper('format_params', formatParameters);
@@ -169,4 +169,4 @@ module.exports = function (comments, options, callback) {
         }), 'utf8')
       })));
     }));
-}
+};

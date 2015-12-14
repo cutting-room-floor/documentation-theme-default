@@ -13,17 +13,6 @@ var fs = require('fs'),
   inlineLex = require('jsdoc-inline-lex');
 
 /**
- * Format a description and target as a Markdown link.
- *
- * @param {string} description the text seen as the link
- * @param {string} href where the link goes
- * @return {string} markdown formatted link
- */
-function markdownLink(description, href) {
-  return '[`' + description + '`](' + href + ')';
-}
-
-/**
  * Format link & tutorial tags with simple code inline tags.
  *
  * @param {Array<string>} paths potential linkable namepaths

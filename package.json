@@ -3,7 +3,8 @@
   "version": "2.2.0",
   "description": "the default theme for documentation",
   "scripts": {
-    "test": "handlebars index.hbs section.hbs > /dev/null"
+    "lint": "eslint **/*.js",
+    "test": "npm run lint && handlebars index.hbs section.hbs > /dev/null"
   },
   "main": "index.js",
   "repository": {

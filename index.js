@@ -9,8 +9,8 @@ var fs = require('fs'),
   hljs = require('highlight.js'),
   Handlebars = require('handlebars'),
   getDoc = require('globals-docs').getDoc,
-  mdast = require('mdast'),
-  html = require('mdast-html'),
+  remark = require('remark'),
+  html = require('remark-html'),
   inlineLex = require('jsdoc-inline-lex');
 
 /**
@@ -151,12 +151,12 @@ module.exports = function (comments, options, callback) {
    * // generates <h2>foo</h2>
    */
   Handlebars.registerHelper('md', function formatMarkdown(string) {
-    return new Handlebars.SafeString(mdast().use(html, htmlOptions)
+    return new Handlebars.SafeString(remark().use(html, htmlOptions)
         .process(formatInlineTags(paths, string)));
   });
 
   Handlebars.registerHelper('format_type', function (type) {
-    return mdast().use(html, htmlOptions)
+    return remark().use(html, htmlOptions)
       .stringify({
         type: 'root',
         children: utils.formatType(type, paths)

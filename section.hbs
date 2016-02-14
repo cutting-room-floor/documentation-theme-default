@@ -95,7 +95,10 @@
   {{/if}}
   {{#if examples}}
     <h4>Examples</h4>
-{{#each examples ~}}<pre class='overflow-auto'>{{{highlight .}}}</pre>{{/each}}
+  {{#each examples ~}}
+    {{#if caption}}<p>{{md caption}}</p>{{/if}}
+    <pre class='overflow-auto'>{{{highlight description}}}</pre>
+  {{/each}}
   {{/if}}
     {{#if members.static}}
       <h4>Static members</h4>

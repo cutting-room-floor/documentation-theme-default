@@ -4,7 +4,7 @@
   "description": "the default theme for documentation",
   "scripts": {
     "lint": "eslint *.js **/*.js",
-    "test": "npm run lint && handlebars index.hbs section.hbs > /dev/null"
+    "test": "npm run lint && tap -t 120 --coverage test/*.js"
   },
   "main": "index.js",
   "repository": {
@@ -35,6 +35,7 @@
     "vinyl-fs": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^1.10.3"
+    "eslint": "^1.10.3",
+    "tap": "^2.2.0"
   }
 }

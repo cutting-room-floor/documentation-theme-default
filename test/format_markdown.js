@@ -28,15 +28,19 @@ test('@tutorial', function (t) {
 });
 
 test('type', function (t) {
-  var paths = [];
   var formatType = formatMarkdown.type;
 
-  t.deepEqual(formatType(undefined, paths), '');
+  t.deepEqual(formatType(undefined), '');
 
   t.deepEqual(formatType({
     type: 'NameExpression',
     name: 'Foo'
-  }, paths), 'Foo\n');
+  }), 'Foo\n');
+
+  t.deepEqual(formatType({
+    type: 'NameExpression',
+    name: 'Foo'
+  }, ['Foo']), '<a href="#Foo">Foo</a>\n');
 
   t.deepEqual(formatType({
     type: 'UnionType',
@@ -50,15 +54,15 @@ test('type', function (t) {
         name: 'Bar'
       }
     ]
-  }, paths), '(\nFoo\n|\nBar\n)\n');
+  }), '(\nFoo\n|\nBar\n)\n');
 
   t.deepEqual(formatType({
     type: 'AllLiteral'
-  }, paths), 'Any\n');
+  }), 'Any\n');
 
   t.deepEqual(formatType({
     type: 'RestType'
-  }, paths), '...\n');
+  }), '...\n');
 
   t.deepEqual(formatType({
     type: 'OptionalType',
@@ -66,7 +70,7 @@ test('type', function (t) {
       type: 'NameExpression',
       name: 'Foo'
     }
-  }, paths), 'Foo\n=\n');
+  }), 'Foo\n=\n');
 
   t.deepEqual(formatType({
     type: 'TypeApplication',
@@ -78,12 +82,25 @@ test('type', function (t) {
       type: 'NameExpression',
       name: 'Bar'
     }]
-  }, paths), 'Foo\n.&lt;\nBar\n&gt;\n');
+  }), 'Foo\n.&lt;\nBar\n&gt;\n');
 
   t.deepEqual(formatType({
     type: 'UndefinedLiteral'
-  }, paths), '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/'
+  }), '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/'
     + 'Reference/Global_Objects/undefined">undefined</a>\n');
+
+  t.done();
+});
+
+test('autolink', function (t) {
+  var autolink = formatMarkdown.link;
+
+  t.equal(autolink([], 'Foo'), 'Foo\n');
+  t.equal(autolink(['Foo'], 'Foo'),
+    '<a href="#Foo">Foo</a>\n');
+  t.equal(autolink([], 'Array'),
+    '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>\n');
+  t.equal(autolink([], 'C&O'), 'C&amp;O\n');
 
   t.done();
 });

@@ -24,14 +24,12 @@
   "homepage": "https://github.com/documentationjs/documentation-theme-default",
   "dependencies": {
     "concat-stream": "^1.5.0",
-    "documentation-theme-utils": "^1.2.1",
-    "globals-docs": "^2.1.0",
+    "documentation-theme-utils": "^2.0.0",
     "handlebars": "^3.0.3",
     "highlight.js": "^9.0.0",
     "jsdoc-inline-lex": "^1.0.1",
     "remark": "^3.0.0",
     "remark-html": "^2.0.0",
-    "unist-builder": "^1.0.1",
     "vinyl": "^1.0.0",
     "vinyl-fs": "^2.0.0"
   },

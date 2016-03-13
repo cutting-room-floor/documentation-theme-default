@@ -6,7 +6,6 @@ var fs = require('fs'),
   vfs = require('vinyl-fs'),
   concat = require('concat-stream'),
   Handlebars = require('handlebars'),
-  autolink = require('./lib/autolink'),
   formatMarkdown = require('./lib/format_markdown'),
   formatParameters = require('./lib/format_parameters');
 
@@ -29,10 +28,6 @@ module.exports = function (comments, options, callback) {
     return this.path.join('.');
   });
 
-  Handlebars.registerHelper('autolink', function (text) {
-    return new Handlebars.SafeString(autolink(paths, text));
-  });
-
   Handlebars.registerHelper('format_params', formatParameters);
 
   Handlebars.registerHelper('md', function (string) {
@@ -41,6 +36,10 @@ module.exports = function (comments, options, callback) {
 
   Handlebars.registerHelper('format_type', function (type) {
     return new Handlebars.SafeString(formatMarkdown.type(type, paths));
+  });
+
+  Handlebars.registerHelper('autolink', function (text) {
+    return new Handlebars.SafeString(formatMarkdown.link(paths, text));
   });
 
   var highlight = require('./lib/highlight')(options.hljs || {});

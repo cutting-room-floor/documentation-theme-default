@@ -30,7 +30,7 @@ module.exports = function (comments, options, callback) {
   });
 
   Handlebars.registerHelper('autolink', function (text) {
-    return autolink(paths, text);
+    return new Handlebars.SafeString(autolink(paths, text));
   });
 
   Handlebars.registerHelper('format_params', formatParameters);

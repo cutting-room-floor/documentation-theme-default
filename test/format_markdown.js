@@ -78,7 +78,7 @@ test('type', function (t) {
       type: 'NameExpression',
       name: 'Bar'
     }]
-  }, paths), 'Foo\n.<\nBar\n>\n');
+  }, paths), 'Foo\n.&lt;\nBar\n&gt;\n');
 
   t.deepEqual(formatType({
     type: 'UndefinedLiteral'

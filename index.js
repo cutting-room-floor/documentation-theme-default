@@ -41,7 +41,7 @@ module.exports = function (comments, options, callback) {
   });
 
   Handlebars.registerHelper('format_type', function (type) {
-    return formatMarkdown.type(type, paths);
+    return new Handlebars.SafeString(formatMarkdown.type(type, paths));
   });
 
   Handlebars.registerHelper('highlight', highlight(options.hljs || {}));

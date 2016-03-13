@@ -7,7 +7,6 @@ var fs = require('fs'),
   concat = require('concat-stream'),
   Handlebars = require('handlebars'),
   autolink = require('./lib/autolink'),
-  highlight = require('./lib/highlight'),
   formatMarkdown = require('./lib/format_markdown'),
   formatParameters = require('./lib/format_parameters');
 
@@ -44,7 +43,10 @@ module.exports = function (comments, options, callback) {
     return new Handlebars.SafeString(formatMarkdown.type(type, paths));
   });
 
-  Handlebars.registerHelper('highlight', highlight(options.hljs || {}));
+  var highlight = require('./lib/highlight')(options.hljs || {});
+  Handlebars.registerHelper('highlight', function (string) {
+    return new Handlebars.SafeString(highlight(string));
+  });
 
   // push assets into the pipeline as well.
   vfs.src([__dirname + '/assets/**'], { base: __dirname })

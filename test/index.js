@@ -1,11 +1,12 @@
 var test = require('tap').test;
+var remark = require('remark');
 var theme = require('..');
 
 test('main', function (t) {
   var comments = [
     {
       path: [],
-      description: 'test',
+      description: remark.parse('test'),
       returns: {
         type: {
           type: 'NameExpression',

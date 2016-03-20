@@ -1,29 +1,10 @@
 var test = require('tap').test;
+var remark = require('remark');
 var formatMarkdown = require('../lib/format_markdown');
 
 test('main', function (t) {
-  t.deepEqual(formatMarkdown('Converts from `Result<T>` to `?Error`'),
+  t.deepEqual(formatMarkdown(remark.parse('Converts from `Result<T>` to `?Error`')),
     '<p>Converts from <code>Result&lt;T&gt;</code> to <code>?Error</code></p>\n');
-  t.done();
-});
-
-test('@link', function (t) {
-  t.deepEqual(formatMarkdown('{@link Foo}', []),
-    '<p>Foo</p>\n');
-  t.deepEqual(formatMarkdown('{@link Foo}', ['Foo']),
-    '<p><a href="#Foo">Foo</a></p>\n');
-  t.deepEqual(formatMarkdown('[text]{@link Foo}', ['Foo']),
-    '<p><a href="#Foo">text</a></p>\n');
-  t.deepEqual(formatMarkdown('{@link Foo|text}', ['Foo']),
-    '<p><a href="#Foo">text</a></p>\n');
-  t.deepEqual(formatMarkdown('{@link Foo text}', ['Foo']),
-    '<p><a href="#Foo">text</a></p>\n');
-  t.done();
-});
-
-test('@tutorial', function (t) {
-  // Not yet supported.
-  t.deepEqual(formatMarkdown('{@tutorial Foo}'), '');
   t.done();
 });
 

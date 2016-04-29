@@ -4,47 +4,62 @@ var fs = require('fs'),
   path = require('path'),
   File = require('vinyl'),
   vfs = require('vinyl-fs'),
+  _ = require('lodash'),
   concat = require('concat-stream'),
-  Handlebars = require('handlebars'),
   formatMarkdown = require('./lib/format_markdown'),
   formatParameters = require('./lib/format_parameters');
 
 module.exports = function (comments, options, callback) {
-  var pageTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, 'index.hbs'), 'utf8'));
-
-  Handlebars.registerPartial('section',
-    Handlebars.compile(fs.readFileSync(path.join(__dirname, 'section.hbs'), 'utf8'), {
-      preventIndent: true
-    })
-  );
-
-  var paths = comments.map(function (comment) {
-    return comment.path.join('.');
-  }).filter(function (path) {
-    return path;
-  });
-
-  Handlebars.registerHelper('permalink', function () {
-    return this.path.join('.');
-  });
-
-  Handlebars.registerHelper('format_params', formatParameters);
-
-  Handlebars.registerHelper('md', function (string) {
-    return new Handlebars.SafeString(formatMarkdown(string, paths));
-  });
-
-  Handlebars.registerHelper('format_type', function (type) {
-    return new Handlebars.SafeString(formatMarkdown.type(type, paths));
-  });
-
-  Handlebars.registerHelper('autolink', function (text) {
-    return new Handlebars.SafeString(formatMarkdown.link(paths, text));
-  });
 
   var highlight = require('./lib/highlight')(options.hljs || {});
-  Handlebars.registerHelper('highlight', function (string) {
-    return new Handlebars.SafeString(highlight(string));
+
+  var namespaces = comments.map(function (comment) {
+    return comment.namespace;
+  });
+
+  var imports = {
+    signature: function (section) {
+      var returns = '';
+      var prefix = '';
+      if (section.kind === 'class') {
+        prefix = 'new ';
+      }
+      if (section.returns) {
+        returns = ': ' +
+          formatMarkdown.type(section.returns[0].type, namespaces);
+      }
+      return prefix + section.name +
+        formatParameters(section) + returns;
+    },
+    md: function (ast, inline) {
+      if (inline && ast && ast.children.length && ast.children[0].type === 'paragraph') {
+        return formatMarkdown({
+          type: 'root',
+          children: ast.children[0].children
+        }, namespaces);
+      }
+      return formatMarkdown(ast, namespaces);
+    },
+    formatType: function (section) {
+      return formatMarkdown.type(section.type, namespaces);
+    },
+    autolink: function (text) {
+      return formatMarkdown.link(namespaces, text);
+    },
+    highlight: function (str) {
+      return highlight(str);
+    }
+  };
+
+  var pageTemplate = _.template(fs.readFileSync(path.join(__dirname, 'index.hbs'), 'utf8'), {
+    imports: {
+      renderSection: _.template(fs.readFileSync(path.join(__dirname, 'section.hbs'), 'utf8'), {
+        imports: imports
+      }),
+      highlight: function (str) {
+        return highlight(str);
+      }
+    }
   });
 
   // push assets into the pipeline as well.

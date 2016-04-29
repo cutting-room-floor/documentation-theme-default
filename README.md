@@ -1,5 +1,7 @@
 # documentation-theme-default
 
+[![Circle CI](https://circleci.com/gh/documentationjs/documentation-theme-default.svg?style=svg)](https://circleci.com/gh/documentationjs/documentation-theme-default)
+
 ![](screenshot.png)
 
 This is the default theme for [documentationjs](https://github.com/documentationjs):

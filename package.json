@@ -1,6 +1,6 @@
 {
   "name": "documentation-theme-default",
-  "version": "3.0.0-beta1",
+  "version": "3.0.0",
   "description": "the default theme for documentation",
   "scripts": {
     "lint": "eslint *.js **/*.js",

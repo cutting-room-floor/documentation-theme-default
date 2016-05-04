@@ -26,10 +26,7 @@
                 <% var hasMembers = doc.members.static.length || doc.members.instance.length %>
                 <li><a
                   href='#<%=doc.namespace%>'
-                  <% if (hasMembers) { %>
-                  class='toggle-sibling'
-                  <% } %>
-                  >
+                  class="<% if (doc.kind === 'note') { %>h5 bold black caps<% } %><% if (hasMembers) { %> toggle-sibling<% } %>">
                   <%- doc.name %>
                   <% if (hasMembers) { %><span class='icon'>▸</span><% } %>
                 </a>
@@ -82,7 +79,11 @@
       <div class='fix-margin-3'>
         <div class='px2'>
           <% docs.forEach(function(s) { %>
-            <div class='keyline-top-not py2'><%=renderSection({ section: s, renderSection: renderSection })%></div>
+            <% if (s.kind !== 'note') { %>
+              <div class='keyline-top-not py2'><%=renderSection({ section: s, renderSection: renderSection })%></div>
+            <% } else { %>
+              <div class='keyline-top-not py2'><%=renderNote({ note: s })%></div>
+            <% } %>
           <% }) %>
         </div>
       </div>

@@ -56,6 +56,9 @@ module.exports = function (comments, options, callback) {
       renderSection: _.template(fs.readFileSync(path.join(__dirname, 'section.hbs'), 'utf8'), {
         imports: imports
       }),
+      renderNote: _.template(fs.readFileSync(path.join(__dirname, 'note.hbs'), 'utf8'), {
+        imports: imports
+      }),
       highlight: function (str) {
         return highlight(str);
       }

@@ -51,12 +51,12 @@ module.exports = function (comments, options, callback) {
     }
   };
 
-  var pageTemplate = _.template(fs.readFileSync(path.join(__dirname, 'index.hbs'), 'utf8'), {
+  var pageTemplate = _.template(fs.readFileSync(path.join(__dirname, 'index._'), 'utf8'), {
     imports: {
-      renderSection: _.template(fs.readFileSync(path.join(__dirname, 'section.hbs'), 'utf8'), {
+      renderSection: _.template(fs.readFileSync(path.join(__dirname, 'section._'), 'utf8'), {
         imports: imports
       }),
-      renderNote: _.template(fs.readFileSync(path.join(__dirname, 'note.hbs'), 'utf8'), {
+      renderNote: _.template(fs.readFileSync(path.join(__dirname, 'note._'), 'utf8'), {
         imports: imports
       }),
       highlight: function (str) {
